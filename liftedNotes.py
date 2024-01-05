@@ -1,6 +1,6 @@
 import os
 
-def getWorkoutFile(username,workout):
+def viewWorkoutFile(username,workout):
     file_path = f"{username}{workout}.txt"
 
     try:
@@ -12,6 +12,47 @@ def getWorkoutFile(username,workout):
 
     except FileNotFoundError:
         print(f"User '{username}' not found. Please register or enter a valid username.")
+
+
+def editWorkoutFile(username, workout):
+    file_path = f"{username}{workout}.txt"
+
+    try:
+        with open(file_path, "r") as user_file:
+            # Read all lines and display them
+            lines = user_file.readlines()
+            for i, line in enumerate(lines):
+                print(f"{i + 1}. {line.strip()}")  # Display line numbers for user to choose
+
+            # Allow user to make edits
+            while True:
+                try:
+                    #User chooses which set to edit
+                    choice = int(input("Enter the line number to edit (or type '0' to finish): "))
+                    if choice == "Done":
+                        break
+                    #check that number is in bounds
+                    elif 1 <= choice <= len(lines):
+                        #change the data on the line
+                        edit_line = lines[choice - 1].strip()
+                        new_weight = input("Enter the new weight: ")
+                        new_reps = input("Enter the new reps: ")
+                        new_data = f"{edit_line.split(':')[0]}: {new_weight} x {new_reps} reps\n"
+                        lines[choice - 1] = new_data
+                    else:
+                        print("Invalid line number. Please try again.")
+                except ValueError:
+                    print("Invalid input. Please enter a number.")
+
+        # Write the updated data back to the file
+        with open(file_path, "w") as user_file:
+            user_file.writelines(lines)
+
+        print(f"Workout data successfully updated in {file_path}")
+
+    except FileNotFoundError:
+        print(f"User '{username}' or workout '{workout}' not found. Please register or enter valid information.")
+
 
 def log_new_workout(username,workout):
     #get from User how many exercises they did
@@ -66,19 +107,23 @@ def main():
 
     while True:
         print("\nChoose an option:\n")
-        print("A- View Workout History\n")
+        print("A - View Workout History\n")
         print("B - Log New Workout\n")
-        print("C - Exit\n")
+        print("C - Edit Existing Workout\n")
+        print("D - Exit\n")
 
-        choice = input("Enter your choice (A / B / C): ")
+        choice = input("Enter your choice (A / B / C / D): ")
 
         if choice == "A":
             workout = input("\nEnter the workout you want to view:\n")
-            getWorkoutFile(username,workout)
+            viewWorkoutFile(username, workout)
         elif choice == "B":
             workout = input("\nEnter the workout you are doing today:\n")
-            log_new_workout(username,workout)
+            log_new_workout(username, workout)
         elif choice == "C":
+            workout = input("\nEnter the workout you want to edit:\n")
+            editWorkoutFile(username, workout)
+        elif choice == "D":
             print("Exiting the program. Goodbye!")
             break
         else:
@@ -86,4 +131,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
