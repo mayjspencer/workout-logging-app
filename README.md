@@ -18,7 +18,7 @@ Example:
 
 ### Main
 - The program starts with a user login.
-- The program offers options to view or edit past workouts, or to creat new ones.
+- The program offers options to view or edit past workouts, or to create new ones.
 
 ### View
 - View all content of a specific workout file
