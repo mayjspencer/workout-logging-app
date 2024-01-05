@@ -27,7 +27,7 @@ def editWorkoutFile(username, workout):
                 try:
                     #User chooses which set to edit
                     choice = int(input("Enter the line number to edit (or type '0' to finish): "))
-                    if choice == "Done":
+                    if choice == "0":
                         break
                     #check that number is in bounds
                     elif 1 <= choice <= len(lines):
@@ -60,9 +60,19 @@ def log_new_workout(username,workout):
             break
         except ValueError: 
             print("Enter a number")
-    #create a line for each exercise in the file
+    #loop through each exercise
     while exerciseCount > 0:
+        #first take in the exercise type and write it to the file
         exercise_type = input("Enter the exercise type: ")
+        file_path = f"{username}{workout}.txt"
+        try:
+            #write the exercise type to the file
+            with open(file_path, "a") as user_file: 
+                user_file.write(f"{exercise_type}: " + "\n")  
+            print(f"Data successfully written to {file_path}")
+        except FileNotFoundError:
+            print(f"User '{username}' not found. Please register or enter a valid username.")
+        #then write workout data to the file on a line for each set 
         try:
             sets = int(input("Enter the amount of sets: "))
         except ValueError: 
@@ -70,7 +80,7 @@ def log_new_workout(username,workout):
         for _ in range(sets):
             weight = input("Enter the weight: ")
             reps = input("Enter the amount of reps: ")
-            workout_data = f"{exercise_type}: {weight} x {reps} reps"#send the data to be written to the file
+            workout_data = f"{weight} x {reps} reps"#send the data to be written to the file
             write_user_file(username, workout, workout_data)
         exerciseCount = exerciseCount - 1
 
