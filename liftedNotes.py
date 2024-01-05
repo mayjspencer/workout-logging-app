@@ -73,10 +73,15 @@ def log_new_workout(username,workout):
         except FileNotFoundError:
             print(f"User '{username}' not found. Please register or enter a valid username.")
         #then write workout data to the file on a line for each set 
-        try:
-            sets = int(input("Enter the amount of sets: "))
-        except ValueError: 
-            print("Enter a number")
+        while True:
+            try:
+                sets = int(input("Enter the amount of sets: "))
+                if 1 <= sets <= 6:
+                    break  # Break out of the loop if sets is a valid integer between 1 and 6
+                else:
+                    print("Give a number between 1 and 6.")
+            except ValueError:
+                print("Enter a number")
         for _ in range(sets):
             weight = input("Enter the weight: ")
             reps = input("Enter the amount of reps: ")
