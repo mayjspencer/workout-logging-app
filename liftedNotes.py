@@ -1,7 +1,7 @@
 import os
 
-def getWorkoutFile(username):
-    file_path = f"{username}.txt"
+def getWorkoutFile(username,workout):
+    file_path = f"{username}{workout}.txt"
 
     try:
         with open(file_path, "r") as user_file:
@@ -13,9 +13,14 @@ def getWorkoutFile(username):
     except FileNotFoundError:
         print(f"User '{username}' not found. Please register or enter a valid username.")
 
-def log_new_workout(username):
+def log_new_workout(username,workout):
     #get from User how many exercises they did
-    exerciseCount = int(input("Enter the amount of exercises you did: "))
+    while True:
+        try:
+            exerciseCount = int(input("Enter the amount of exercises you did: "))
+            break
+        except ValueError: 
+            print("Enter a number")
     #create a line for each exercise in the file
     while exerciseCount > 0:
         exercise_type = input("Enter the exercise type: ")
@@ -23,11 +28,11 @@ def log_new_workout(username):
         reps = input("Enter the number of reps per set: ")
         workout_data = f"{exercise_type}, {sets} sets x {reps} reps"
         #send the data to be written to the file
-        write_user_file(username, workout_data)
+        write_user_file(username, workout, workout_data)
         exerciseCount = exerciseCount - 1
 
-def write_user_file(username, workoutdata):
-    file_path = f"{username}.txt"
+def write_user_file(username, workout,workoutdata):
+    file_path = f"{username}{workout}.txt"
 
     try:
         #write the workout data to the file - one line per exercise done
@@ -64,9 +69,11 @@ def main():
         choice = input("Enter your choice (A / B / C): ")
 
         if choice == "A":
-            getWorkoutFile(username)
+            workout = input("\nEnter the workout you want to view:\n")
+            getWorkoutFile(username,workout)
         elif choice == "B":
-            log_new_workout(username)
+            workout = input("\nEnter the workout you are doing today:\n")
+            log_new_workout(username,workout)
         elif choice == "C":
             print("Exiting the program. Goodbye!")
             break
