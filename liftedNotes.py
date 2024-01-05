@@ -24,11 +24,15 @@ def log_new_workout(username,workout):
     #create a line for each exercise in the file
     while exerciseCount > 0:
         exercise_type = input("Enter the exercise type: ")
-        sets = input("Enter the number of sets: ")
-        reps = input("Enter the number of reps per set: ")
-        workout_data = f"{exercise_type}, {sets} sets x {reps} reps"
-        #send the data to be written to the file
-        write_user_file(username, workout, workout_data)
+        try:
+            sets = int(input("Enter the amount of sets: "))
+        except ValueError: 
+            print("Enter a number")
+        for _ in range(sets):
+            weight = input("Enter the weight: ")
+            reps = input("Enter the amount of reps: ")
+            workout_data = f"{exercise_type}: {weight} x {reps} reps"#send the data to be written to the file
+            write_user_file(username, workout, workout_data)
         exerciseCount = exerciseCount - 1
 
 def write_user_file(username, workout,workoutdata):
@@ -82,3 +86,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
