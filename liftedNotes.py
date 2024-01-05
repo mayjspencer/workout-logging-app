@@ -27,15 +27,15 @@ def editWorkoutFile(username, workout):
                 try:
                     #User chooses which set to edit
                     choice = int(input("Enter the line number to edit (or type '0' to finish): "))
-                    if choice == "0":
+                    if choice == 0:
                         break
                     #check that number is in bounds
                     elif 1 <= choice <= len(lines):
                         #change the data on the line
-                        edit_line = lines[choice - 1].strip()
+                        #edit_line = lines[choice - 1].strip()
                         new_weight = input("Enter the new weight: ")
                         new_reps = input("Enter the new reps: ")
-                        new_data = f"{edit_line.split(':')[0]}: {new_weight} x {new_reps} reps\n"
+                        new_data = f"{new_weight} x {new_reps} reps\n"
                         lines[choice - 1] = new_data
                     else:
                         print("Invalid line number. Please try again.")
