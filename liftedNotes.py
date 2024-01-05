@@ -1,5 +1,3 @@
-import os
-
 def viewWorkoutFile(username,workout):
     file_path = f"{username}{workout}.txt"
 
@@ -88,16 +86,31 @@ def write_user_file(username, workout,workoutdata):
     except FileNotFoundError:
         print(f"User '{username}' not found. Please register or enter a valid username.")
 
-def register_user(username):
-    # Check if the user already exists
-    if os.path.isfile(f"{username}.txt"):
-        print(f"User '{username}' already exists. Logging in...")
-    else:
-        # Create a new user and associated text file
-        with open(f"{username}.txt", "w") as user_file:
-            user_file.write(f"User: {username}\n\nWorkout History:\n")
 
+# Check user file for the provided username
+# Return False if the user is found in the file
+def verify_user(username):
+    file_path = "users.txt"
+    try:
+        with open(file_path, "r") as user_file:
+            for line in user_file:
+                if line.strip() == username:
+                    return False
+    except FileNotFoundError:
+        return True
+    
+    return True  # Username not found, available
+
+# Add user or log the user in if they are not new
+def register_user(username):
+    # Check if the user is not in the user file (i.e., the username is available)
+    if verify_user(username):
+        with open("users.txt", "a") as user_file:
+            user_file.write(f"{username}\n")
         print(f"User '{username}' successfully registered.")
+    else:
+        print(f"User '{username}' already exists. Logging in...")
+
 
 def main():
     print("Welcome to the Command-Line Workout Tracker!\n")
